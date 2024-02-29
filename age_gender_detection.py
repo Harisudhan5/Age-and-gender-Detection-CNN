@@ -8,7 +8,7 @@ cap = cv2.VideoCapture(0)
 while True:
     ret, frame = cap.read()
     faces = mtcnn_detector.detect_faces(frame)
-    if not faces:
+    if not faces: # this is to avoid analyzing where faces are not present (increases efficiency)
         continue
     for face_info in faces:
         x, y, w, h = face_info['box']
@@ -22,8 +22,8 @@ while True:
             else:gender = "Male"
             print(gender)
             cv2.rectangle(frame, (x, y), (x + w, y + h), (255, 0, 0), 2)
-            cv2.putText(frame, f'Age: {age}', (x, y - 10), cv2.FONT_HERSHEY_SIMPLEX, 0.9, (255, 215, 0), 2)
-            cv2.putText(frame, f'Gender: {gender}', (x, y + h + 30), cv2.FONT_HERSHEY_SIMPLEX, 0.9, (255, 215, 0), 2)
+            cv2.putText(frame, f'Age - {age}', (x, y - 10), cv2.FONT_HERSHEY_SIMPLEX, 0.9, (255, 215, 0), 2)
+            cv2.putText(frame, f'Gender - {gender}', (x, y + h + 30), cv2.FONT_HERSHEY_SIMPLEX, 0.9, (255, 215, 0), 2)
 
     cv2.imshow('Real-time Face, Age, Gender Detection', frame)
     if cv2.waitKey(1) & 0xFF == ord('q'):
